@@ -1,2 +1,2 @@
 <?php
-echo phpinfo();
+echo "There is no spoon";
