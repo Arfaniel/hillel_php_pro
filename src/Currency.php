@@ -29,8 +29,7 @@ class Currency
     {
         if ($someCurrency->getIsoCode() == $this->isoCode) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 }

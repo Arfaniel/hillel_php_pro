@@ -41,9 +41,8 @@ class Money
     {
         if ($this->amount == $someMoney->amountGet() && $this->currency == $someMoney->currencyGet()) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     public function add(Money $someMoney)
