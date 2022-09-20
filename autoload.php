@@ -141,5 +141,5 @@ class Psr4AutoloaderClass
 }
 
 $object = new Psr4AutoloaderClass();
-$object->addNamespace('Sandbox', 'src');
+$object->addNamespace('Sandbox\\', 'src');
 $object->register();
