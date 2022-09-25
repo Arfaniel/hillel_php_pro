@@ -159,7 +159,7 @@ abstract class AbstractUnicodeString extends AbstractString
     public function camel(): static
     {
         $str = clone $this;
-        $str->string = str_replace(' ', '', preg_replace_callback('/\b.(?![A-Z]{2,})/u', static function ($m) use (&$i) {
+        $str->string = str_replace(' ', '', preg_replace_callback('/\b./u', static function ($m) use (&$i) {
             return 1 === ++$i ? ('İ' === $m[0] ? 'i̇' : mb_strtolower($m[0], 'UTF-8')) : mb_convert_case($m[0], \MB_CASE_TITLE, 'UTF-8');
         }, preg_replace('/[^\pL0-9]++/u', ' ', $this->string)));
 
@@ -234,7 +234,15 @@ abstract class AbstractUnicodeString extends AbstractString
 
         try {
             if (false === $match($regexp.'u', $this->string, $matches, $flags | \PREG_UNMATCHED_AS_NULL, $offset)) {
-                throw new RuntimeException('Matching failed with error: '.preg_last_error_msg());
+                $lastError = preg_last_error();
+
+                foreach (get_defined_constants(true)['pcre'] as $k => $v) {
+                    if ($lastError === $v && str_ends_with($k, '_ERROR')) {
+                        throw new RuntimeException('Matching failed with '.$k.'.');
+                    }
+                }
+
+                throw new RuntimeException('Matching failed with unknown error code.');
             }
         } finally {
             restore_error_handler();

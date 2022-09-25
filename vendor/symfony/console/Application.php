@@ -21,7 +21,6 @@ use Symfony\Component\Console\Command\SignalableCommandInterface;
 use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
-use Symfony\Component\Console\Completion\Suggestion;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\Console\Event\ConsoleSignalEvent;
@@ -303,6 +302,9 @@ class Application implements ResetInterface
         return $exitCode;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function reset()
     {
     }
@@ -351,16 +353,18 @@ class Application implements ResetInterface
             CompletionInput::TYPE_ARGUMENT_VALUE === $input->getCompletionType()
             && 'command' === $input->getCompletionName()
         ) {
+            $commandNames = [];
             foreach ($this->all() as $name => $command) {
                 // skip hidden commands and aliased commands as they already get added below
                 if ($command->isHidden() || $command->getName() !== $name) {
                     continue;
                 }
-                $suggestions->suggestValue(new Suggestion($command->getName(), $command->getDescription()));
+                $commandNames[] = $command->getName();
                 foreach ($command->getAliases() as $name) {
-                    $suggestions->suggestValue(new Suggestion($name, $command->getDescription()));
+                    $commandNames[] = $name;
                 }
             }
+            $suggestions->suggestValues(array_filter($commandNames));
 
             return;
         }

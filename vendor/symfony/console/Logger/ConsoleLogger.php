@@ -59,6 +59,9 @@ class ConsoleLogger extends AbstractLogger
         $this->formatLevelMap = $formatLevelMap + $this->formatLevelMap;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function log($level, $message, array $context = []): void
     {
         if (!isset($this->verbosityLevelMap[$level])) {
@@ -108,7 +111,7 @@ class ConsoleLogger extends AbstractLogger
             } elseif ($val instanceof \DateTimeInterface) {
                 $replacements["{{$key}}"] = $val->format(\DateTime::RFC3339);
             } elseif (\is_object($val)) {
-                $replacements["{{$key}}"] = '[object '.$val::class.']';
+                $replacements["{{$key}}"] = '[object '.\get_class($val).']';
             } else {
                 $replacements["{{$key}}"] = '['.\gettype($val).']';
             }

@@ -50,7 +50,7 @@ class ConsoleSectionOutput extends StreamOutput
         }
 
         if ($lines) {
-            array_splice($this->content, -$lines);
+            array_splice($this->content, -($lines * 2)); // Multiply lines by 2 to cater for each new line added between content
         } else {
             $lines = $this->lines;
             $this->content = [];
@@ -78,45 +78,18 @@ class ConsoleSectionOutput extends StreamOutput
     /**
      * @internal
      */
-    public function addContent(string $input, bool $newline = true)
+    public function addContent(string $input)
     {
-        $width = $this->terminal->getWidth();
-        $lines = explode(\PHP_EOL, $input);
-        $count = \count($lines) - 1;
-        foreach ($lines as $i => $lineContent) {
-            // re-add the line break (that has been removed in the above `explode()` for
-            // - every line that is not the last line
-            // - if $newline is required, also add it to the last line
-            if ($i < $count || $newline) {
-                $lineContent .= \PHP_EOL;
-            }
-
-            // skip line if there is no text (or newline for that matter)
-            if ('' === $lineContent) {
-                continue;
-            }
-
-            // For the first line, check if the previous line (last entry of `$this->content`)
-            // needs to be continued (i.e. does not end with a line break).
-            if (0 === $i
-                && (false !== $lastLine = end($this->content))
-                && !str_ends_with($lastLine, \PHP_EOL)
-            ) {
-                // deduct the line count of the previous line
-                $this->lines -= (int) ceil($this->getDisplayLength($lastLine) / $width) ?: 1;
-                // concatenate previous and new line
-                $lineContent = $lastLine.$lineContent;
-                // replace last entry of `$this->content` with the new expanded line
-                array_splice($this->content, -1, 1, $lineContent);
-            } else {
-                // otherwise just add the new content
-                $this->content[] = $lineContent;
-            }
-
-            $this->lines += (int) ceil($this->getDisplayLength($lineContent) / $width) ?: 1;
+        foreach (explode(\PHP_EOL, $input) as $lineContent) {
+            $this->lines += ceil($this->getDisplayLength($lineContent) / $this->terminal->getWidth()) ?: 1;
+            $this->content[] = $lineContent;
+            $this->content[] = \PHP_EOL;
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function doWrite(string $message, bool $newline)
     {
         if (!$this->isDecorated()) {
@@ -125,16 +98,11 @@ class ConsoleSectionOutput extends StreamOutput
             return;
         }
 
-        // Check if the previous line (last entry of `$this->content`) needs to be continued
-        // (i.e. does not end with a line break). In which case, it needs to be erased first.
-        $deleteLastLine = ($lastLine = end($this->content) ?: '') && !str_ends_with($lastLine, \PHP_EOL) ? 1 : 0;
-        $erasedContent = $this->popStreamContentUntilCurrentSection($deleteLastLine);
+        $erasedContent = $this->popStreamContentUntilCurrentSection();
 
-        $this->addContent($message, $newline);
+        $this->addContent($message);
 
-        // If the last line was removed, re-print its content together with the new content.
-        // Otherwise, just print the new content.
-        parent::doWrite($deleteLastLine ? $lastLine.$message : $message, true);
+        parent::doWrite($message, true);
         parent::doWrite($erasedContent, false);
     }
 
@@ -153,12 +121,7 @@ class ConsoleSectionOutput extends StreamOutput
             }
 
             $numberOfLinesToClear += $section->lines;
-            if ('' !== $sectionContent = $section->getContent()) {
-                if (!str_ends_with($sectionContent, \PHP_EOL)) {
-                    $sectionContent .= \PHP_EOL;
-                }
-                $erasedContent[] = $sectionContent;
-            }
+            $erasedContent[] = $section->getContent();
         }
 
         if ($numberOfLinesToClear > 0) {

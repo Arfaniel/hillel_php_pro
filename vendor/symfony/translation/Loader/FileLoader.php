@@ -21,6 +21,9 @@ use Symfony\Component\Translation\MessageCatalogue;
  */
 abstract class FileLoader extends ArrayLoader
 {
+    /**
+     * {@inheritdoc}
+     */
     public function load(mixed $resource, string $locale, string $domain = 'messages'): MessageCatalogue
     {
         if (!stream_is_local($resource)) {

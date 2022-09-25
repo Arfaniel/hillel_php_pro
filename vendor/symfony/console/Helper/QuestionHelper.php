@@ -84,6 +84,9 @@ class QuestionHelper extends Helper
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName(): string
     {
         return 'question';
@@ -137,7 +140,6 @@ class QuestionHelper extends Helper
         }
 
         if ($output instanceof ConsoleSectionOutput) {
-            $output->addContent(''); // add EOL to the question
             $output->addContent($ret);
         }
 

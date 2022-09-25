@@ -109,6 +109,15 @@ trait HasAttributes
     ];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @deprecated Use the "casts" property
+     *
+     * @var array
+     */
+    protected $dates = [];
+
+    /**
      * The storage format of the model's date columns.
      *
      * @var string
@@ -1404,10 +1413,16 @@ trait HasAttributes
      */
     public function getDates()
     {
-        return $this->usesTimestamps() ? [
+        if (! $this->usesTimestamps()) {
+            return $this->dates;
+        }
+
+        $defaults = [
             $this->getCreatedAtColumn(),
             $this->getUpdatedAtColumn(),
-        ] : [];
+        ];
+
+        return array_unique(array_merge($this->dates, $defaults));
     }
 
     /**
@@ -2061,6 +2076,16 @@ trait HasAttributes
         );
 
         return $this;
+    }
+
+    /**
+     * Get the accessors that are being appended to model arrays.
+     *
+     * @return array
+     */
+    public function getAppends()
+    {
+        return $this->appends;
     }
 
     /**

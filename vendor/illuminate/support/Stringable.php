@@ -169,21 +169,20 @@ class Stringable implements JsonSerializable
      * @param  string|iterable<string>  $needles
      * @return bool
      */
-    public function contains($needles, $ignoreCase = false)
+    public function contains($needles)
     {
-        return Str::contains($this->value, $needles, $ignoreCase);
+        return Str::contains($this->value, $needles);
     }
 
     /**
      * Determine if a given string contains all array values.
      *
-     * @param  string|iterable<string>  $needles
-     * @param  bool  $ignoreCase
+     * @param  iterable<string>  $needles
      * @return bool
      */
-    public function containsAll($needles, $ignoreCase = false)
+    public function containsAll($needles)
     {
-        return Str::containsAll($this->value, $needles, $ignoreCase);
+        return Str::containsAll($this->value, $needles);
     }
 
     /**
@@ -1061,7 +1060,7 @@ class Stringable implements JsonSerializable
      */
     public function wrap($before, $after = null)
     {
-        return new static($before.$this->value.($after ??= $before));
+        return new static(Str::wrap($this->value, $before, $after));
     }
 
     /**

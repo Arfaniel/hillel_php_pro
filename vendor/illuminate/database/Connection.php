@@ -757,7 +757,7 @@ class Connection implements ConnectionInterface
         // lot more helpful to the developer instead of just the database's errors.
         catch (Exception $e) {
             throw new QueryException(
-                $this->getName(), $query, $this->prepareBindings($bindings), $e
+                $query, $this->prepareBindings($bindings), $e
             );
         }
     }
@@ -924,7 +924,7 @@ class Connection implements ConnectionInterface
      *
      * @return void
      */
-    public function reconnectIfMissingConnection()
+    protected function reconnectIfMissingConnection()
     {
         if (is_null($this->pdo)) {
             $this->reconnect();
@@ -1134,7 +1134,7 @@ class Connection implements ConnectionInterface
     /**
      * Register a custom Doctrine mapping type.
      *
-     * @param  string  $class
+     * @param  Type|class-string<Type>  $class
      * @param  string  $name
      * @param  string  $type
      * @return void
@@ -1142,7 +1142,7 @@ class Connection implements ConnectionInterface
      * @throws \Doctrine\DBAL\DBALException
      * @throws \RuntimeException
      */
-    public function registerDoctrineType(string $class, string $name, string $type): void
+    public function registerDoctrineType(Type|string $class, string $name, string $type): void
     {
         if (! $this->isDoctrineAvailable()) {
             throw new RuntimeException(
@@ -1151,7 +1151,8 @@ class Connection implements ConnectionInterface
         }
 
         if (! Type::hasType($name)) {
-            Type::addType($name, $class);
+            Type::getTypeRegistry()
+                ->register($name, is_string($class) ? new $class() : $class);
         }
 
         $this->doctrineTypeMappings[$name] = $type;
