@@ -2,3 +2,4 @@
 .DS_Store
 hillel_repo
 hillel_repo.pub
+/vendor/*
