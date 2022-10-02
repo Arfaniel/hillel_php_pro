@@ -12,6 +12,7 @@ $validator = new Factory($translator);
 
 /** @var \Illuminate\Database\Capsule\Manager $capsule */
 $databasePresenceVerifier = new DatabasePresenceVerifier($capsule->getDatabaseManager());
+$validator->setPresenceVerifier($databasePresenceVerifier);
 
 function validator()
 {

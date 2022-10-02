@@ -1,6 +1,6 @@
 @extends('layout')
 
-@section('title', 'Tags')
+@section('title', 'Posts')
 
 @section('breadcrumbs')
     @include('particials.breadcrumbs', [
@@ -8,11 +8,11 @@
             [
                 'link' => '/category',
                 'name' => 'Category List'
+            ],[
+                'link' => '/tag',
+                'name' => 'Tag List'
             ], [
                 'link' => '/',
-                'name' => 'Tag List'
-            ],[
-                'link' => '/post',
                 'name' => 'Post List'
             ]
         ]
@@ -28,36 +28,35 @@
     @php
         unset($_SESSION['success']);
     @endphp
-    <h1>Tag List</h1>
+    <h1>Post List</h1>
     <table class="table">
         <thead>
         <tr>
             <th scope="col">ID</th>
             <th scope="col">Title</th>
             <th scope="col">Slug</th>
-            <th scope="col">Posts</th>
-            <th scope="col" colspan="3">Actions</th>
+            <th scope="col">Body</th>
+            <th scope="col">Category</th>
+            <th scope="col">Tags</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
-        @forelse ($tags as $tag)
+        @forelse ($posts as $post)
             <tr>
-                <th scope="row">{{ $tag->id }}</th>
-                <td>{{ $tag->title }}</td>
-                <td>{{ $tag->slug }}</td>
-                <td>{{ $tag->posts->pluck('title')->join(', ') }}</td>
-                <td><a href="/tag/{{ $tag->id }}/edit">UPDATE</a></td>
-                <td><a href="/tag/{{ $tag->id }}/delete">DELETE</a></td>
-                <td><a href="/tag/{{ $tag->id }}/show">SHOW</a></td>
+                <th scope="row">{{ $post->id }}</th>
+                <td>{{ $post->title }}</td>
+                <td>{{ $post->slug }}</td>
+                <td>{{ $post->body }}</td>
+                <td>{{ $post->category_id }}</td>
+                <td>{{ $post->tags->pluck('title')->join(', ') }}</td>
+                <td><a href="/post/{{ $post->id }}/restore">RESTORE</a></td>
+
             </tr>
         @empty
             <p>Empty</p>
         @endforelse
         </tbody>
     </table>
-    <a class="btn btn-primary" href="/tag/create"> ADD MORE </a>
-    <br>
-    <a class="btn btn-info" href="/tag/trash"> TRASH </a>
-    <br>
-    <a class="btn btn-secondary mt-3" href="/tag"> Back </a>
+    <a class="btn btn-secondary mt-3" href="/post"> Back </a>
 @endsection

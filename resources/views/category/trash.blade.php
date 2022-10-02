@@ -35,7 +35,7 @@
             <th scope="col">ID</th>
             <th scope="col">Title</th>
             <th scope="col">Slug</th>
-            <th scope="col" colspan="4">Actions</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -44,18 +44,13 @@
                 <th scope="row">{{ $category->id }}</th>
                 <td>{{ $category->title }}</td>
                 <td>{{ $category->slug }}</td>
-                <td><a href="/category/{{ $category->id }}/edit">UPDATE</a></td>
-                <td><a href="/category/{{ $category->id }}/delete">DELETE</a></td>
-                <td><a href="/category/{{ $category->id }}/show">SHOW</a></td>
+                <td><a href="/category/{{ $category->id }}/restore">RESTORE</a></td>
+
             </tr>
         @empty
             <p>Empty</p>
         @endforelse
         </tbody>
     </table>
-    <a class="btn btn-primary" href="/category/create"> ADD MORE </a>
-    <br>
-    <a class="btn btn-info" href="/category/trash"> TRASH </a>
-    <br>
     <a class="btn btn-secondary mt-3" href="/category"> Back </a>
 @endsection

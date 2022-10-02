@@ -36,7 +36,7 @@
             <th scope="col">Title</th>
             <th scope="col">Slug</th>
             <th scope="col">Posts</th>
-            <th scope="col" colspan="3">Actions</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -46,18 +46,12 @@
                 <td>{{ $tag->title }}</td>
                 <td>{{ $tag->slug }}</td>
                 <td>{{ $tag->posts->pluck('title')->join(', ') }}</td>
-                <td><a href="/tag/{{ $tag->id }}/edit">UPDATE</a></td>
-                <td><a href="/tag/{{ $tag->id }}/delete">DELETE</a></td>
-                <td><a href="/tag/{{ $tag->id }}/show">SHOW</a></td>
+                <td><a href="/tag/{{ $tag->id }}/restore">RESTORE</a></td>
             </tr>
         @empty
             <p>Empty</p>
         @endforelse
         </tbody>
     </table>
-    <a class="btn btn-primary" href="/tag/create"> ADD MORE </a>
-    <br>
-    <a class="btn btn-info" href="/tag/trash"> TRASH </a>
-    <br>
     <a class="btn btn-secondary mt-3" href="/tag"> Back </a>
 @endsection
