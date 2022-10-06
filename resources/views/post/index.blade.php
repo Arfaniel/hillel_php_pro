@@ -61,7 +61,5 @@
     </table>
     <a class="btn btn-primary" href="/post/create"> ADD MORE </a>
     <br>
-    <a class="btn btn-info" href="/post/trash"> TRASH </a>
-    <br>
     <a class="btn btn-secondary mt-3" href="/post"> Back </a>
 @endsection

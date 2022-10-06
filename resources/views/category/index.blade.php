@@ -55,7 +55,6 @@
     </table>
     <a class="btn btn-primary" href="/category/create"> ADD MORE </a>
     <br>
-    <a class="btn btn-info" href="/category/trash"> TRASH </a>
     <br>
     <a class="btn btn-secondary mt-3" href="/category"> Back </a>
 @endsection

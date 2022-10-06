@@ -57,7 +57,5 @@
     </table>
     <a class="btn btn-primary" href="/tag/create"> ADD MORE </a>
     <br>
-    <a class="btn btn-info" href="/tag/trash"> TRASH </a>
-    <br>
     <a class="btn btn-secondary mt-3" href="/tag"> Back </a>
 @endsection

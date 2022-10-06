@@ -13,11 +13,6 @@ class TagController
         $tags = Tag::all();
         return view('tag/index', compact('tags'));
     }
-    public function trash()
-    {
-        $tags = Tag::onlyTrashed()->get();
-        return view('tag/trash', compact('tags'));
-    }
 
     public function show($id)
     {
@@ -110,13 +105,6 @@ class TagController
     {
         $tag = Tag::find($id);
         $tag->delete();
-        return new RedirectResponse('/tag');
-    }
-    public function restore($id)
-    {
-        $tag = Tag::withTrashed()
-            ->where('id', $id)
-            ->restore();
         return new RedirectResponse('/tag');
     }
 }

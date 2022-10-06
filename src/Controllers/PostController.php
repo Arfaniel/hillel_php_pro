@@ -15,11 +15,6 @@ class PostController
         $posts = Post::all();
         return view('post/index', compact('posts'));
     }
-    public function trash()
-    {
-        $posts = Post::onlyTrashed()->get();
-        return view('post/trash', compact('posts'));
-    }
 
     public function show($id)
     {
@@ -103,11 +98,4 @@ class PostController
         return new RedirectResponse('/post');
     }
 
-    public function restore($id)
-    {
-        $post = Post::withTrashed()
-            ->where('id', $id)
-            ->restore();
-        return new RedirectResponse('/post');
-    }
 }

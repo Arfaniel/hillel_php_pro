@@ -14,11 +14,6 @@ class CategoryController
         return view('category/index', compact('categories'));
     }
 
-    public function trash()
-    {
-        $categories = Category::onlyTrashed()->get();
-        return view('category/trash', compact('categories'));
-    }
 
     public function show($id)
     {
@@ -96,13 +91,6 @@ class CategoryController
     {
         $category = Category::find($id);
         $category->delete();
-        return new RedirectResponse('/category');
-    }
-    public function restore($id)
-    {
-        $category = Category::withTrashed()
-            ->where('id', $id)
-            ->restore();
         return new RedirectResponse('/category');
     }
 }
