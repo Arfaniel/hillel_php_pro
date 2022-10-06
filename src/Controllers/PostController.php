@@ -1,11 +1,11 @@
 <?php
+
 namespace Sandbox\Controllers;
 
 use Sandbox\Model\Category;
 use Sandbox\Model\Post;
 use Illuminate\Http\RedirectResponse;
 use Sandbox\Model\Tag;
-
 
 
 class PostController
@@ -15,6 +15,7 @@ class PostController
         $posts = Post::all();
         return view('post/index', compact('posts'));
     }
+
     public function trash()
     {
         $posts = Post::onlyTrashed()->get();
@@ -45,8 +46,7 @@ class PostController
             'category_id' => ['exists:categories,id'],
             'tags' => ['required', 'exists:tags,id']
         ]);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             $_SESSION['errors'] = $validator->errors()->toArray();
             $_SESSION['data'] = $data;
             return new RedirectResponse($_SERVER['HTTP_REFERER']);
@@ -79,8 +79,7 @@ class PostController
             'body' => ['required', 'min:10'],
             'category_id' => ['exists:categories,id', 'required']
         ]);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             $_SESSION['errors'] = $validator->errors()->toArray();
             $_SESSION['data'] = $data;
             return new RedirectResponse($_SERVER['HTTP_REFERER']);

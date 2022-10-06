@@ -21,9 +21,9 @@
 
 @section('content')
     @isset($_SESSION['success'])
-            <div class="alert alert-success" role="alert">
-                {{ $_SESSION['success'] }}
-            </div>
+        <div class="alert alert-success" role="alert">
+            {{ $_SESSION['success'] }}
+        </div>
     @endisset
     @php
         unset($_SESSION['success']);
@@ -45,7 +45,6 @@
                 <td>{{ $category->title }}</td>
                 <td>{{ $category->slug }}</td>
                 <td><a href="/category/{{ $category->id }}/restore">RESTORE</a></td>
-
             </tr>
         @empty
             <p>Empty</p>

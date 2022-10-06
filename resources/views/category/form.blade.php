@@ -4,7 +4,8 @@
     <form action="/category/store" method="post">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ $_SESSION['data']['title'] ?? '' }}">
+            <input type="text" class="form-control" id="title" name="title"
+                   value="{{ $_SESSION['data']['title'] ?? '' }}">
             @isset($_SESSION['errors']['title'])
                 @foreach($_SESSION['errors']['title'] as $title)
                     <div class="alert alert-danger" role="alert">

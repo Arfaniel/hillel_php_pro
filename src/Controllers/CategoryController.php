@@ -1,9 +1,9 @@
 <?php
+
 namespace Sandbox\Controllers;
 
 use Sandbox\Model\Category;
 use Illuminate\Http\RedirectResponse;
-
 
 
 class CategoryController
@@ -37,10 +37,9 @@ class CategoryController
         $data = request()->all();
         $validator = validator()->make($data, [
             'title' => ['required', 'min:5', 'max:255'],
-            'slug' => ['required', 'min:5', 'max:255', ]
+            'slug' => ['required', 'min:5', 'max:255',]
         ]);
-        if($validator->fails())
-        {
+        if ($validator->fails()) {
             $_SESSION['errors'] = $validator->errors()->toArray();
             $_SESSION['data'] = $data;
             return new RedirectResponse($_SERVER['HTTP_REFERER']);
@@ -98,6 +97,7 @@ class CategoryController
         $category->delete();
         return new RedirectResponse('/category');
     }
+
     public function restore($id)
     {
         $category = Category::withTrashed()

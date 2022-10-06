@@ -9,7 +9,6 @@ require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../config/validator.php';
 
 
-
 /**
  * @var Illuminate\Routing\Router $router
  */
@@ -18,9 +17,3 @@ require_once __DIR__ . '/../config/validator.php';
  */
 $responce = $router->dispatch($request);
 echo $responce->getContent();
-
-//
-///** @var $blade */
-//echo $blade->make('index',[
-//    'header' => 'CRUD for tags and categories'
-//])->render();

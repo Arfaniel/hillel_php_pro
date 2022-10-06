@@ -51,7 +51,6 @@
                 <td>{{ $post->category_id }}</td>
                 <td>{{ $post->tags->pluck('title')->join(', ') }}</td>
                 <td><a href="/post/{{ $post->id }}/restore">RESTORE</a></td>
-
             </tr>
         @empty
             <p>Empty</p>

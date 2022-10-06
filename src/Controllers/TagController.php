@@ -1,4 +1,5 @@
 <?php
+
 namespace Sandbox\Controllers;
 
 use Sandbox\Model\Post;
@@ -13,6 +14,7 @@ class TagController
         $tags = Tag::all();
         return view('tag/index', compact('tags'));
     }
+
     public function trash()
     {
         $tags = Tag::onlyTrashed()->get();
@@ -29,7 +31,7 @@ class TagController
     {
         $tag = new Tag();
         $posts = Post::all();
-        return view('tag/form', compact('tag',  'posts'));
+        return view('tag/form', compact('tag', 'posts'));
     }
 
     public function store()
@@ -112,6 +114,7 @@ class TagController
         $tag->delete();
         return new RedirectResponse('/tag');
     }
+
     public function restore($id)
     {
         $tag = Tag::withTrashed()
